@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
 public class Jar {
-    /* Create a program that takes ideas, then stores them.
-    *  Create the app in an infinite loop until the user quits out.
-    *  After each function, allow the user to continue or not.
+    /* Create a program that takes ideas, then stores them. [Done]
+    *  Create the app in an infinite loop until the user quits out. [Done]
+    *  After each function, allow the user to continue or not. [Done]
     *  Store the ideas in a list.
     *  Place the list inside of a file.
     *  -
@@ -17,7 +17,7 @@ public class Jar {
     *  -
     *  Allow users to exit.*/
 
-    public Scanner keyboard = new Scanner(System.in);
+    Scanner keyboard = new Scanner(System.in);
 
     public void displayMenu(){
         System.out.println("Welcome to the Idea Jar! \n" +
@@ -28,10 +28,12 @@ public class Jar {
                 "4.) Delete idea from current jar \n" +
                 "5.) Get an idea! \n" +
                 "6.) Exit program");
+
+        menuChoice();
     }
 
     public void menuChoice(){
-        int userMenuChoice = 0;
+        int userMenuChoice;
 
         System.out.print("What is your choice: ");
 
@@ -39,8 +41,30 @@ public class Jar {
             if(keyboard.hasNextInt()){
                 userMenuChoice = keyboard.nextInt();
                 if(userMenuChoice > 0 && userMenuChoice < 7){
-                    System.out.print("Good");
                     // Add switch statement with all menu options.
+                    switch(userMenuChoice){
+                        case 1:
+                            keyboard.nextLine();
+                            createJar();
+                            break;
+                        case 2:
+                            System.out.println("Option 2");
+                            break;
+                        case 3:
+                            System.out.println("Option 3");
+                            break;
+                        case 4:
+                            System.out.println("Option 4");
+                            break;
+                        case 5:
+                            System.out.println("Option 5");
+                            break;
+                        case 6:
+                            System.out.println("Option 6");
+                            break;
+                    }
+                    keyboard.nextLine();
+                    continueChoice();
                     break;
                 }else{
                     System.out.print("Invalid range. Please try again: ");
@@ -55,21 +79,37 @@ public class Jar {
     public void continueChoice(){
         // Get user input.
         String userContinueChoice;
-
-        while(true){
+        do{
             System.out.print("Would you like to run again? (Y or N): ");
             userContinueChoice = keyboard.nextLine();
 
             if(userContinueChoice.equalsIgnoreCase("y")){
                 displayMenu();
-                menuChoice();
-                break;
             }else if(userContinueChoice.equalsIgnoreCase("n")){
                 System.out.println("Have a nice day!");
                 System.exit(1);
             }else{
                 System.out.println("Invalid input. ");
             }
-        }
+        }while(true);
+    }
+
+    public void createJar(){
+        System.out.println("Creating Jar...");
+        String userContinueChoice;
+
+        do{
+            System.out.println("Would you like to add an idea? (y or n): ");
+            userContinueChoice = keyboard.nextLine();
+            if(userContinueChoice.equalsIgnoreCase("y")){
+                System.out.println("adding new");
+            }else if(userContinueChoice.equalsIgnoreCase("n")){
+                continueChoice();
+            }else{
+                System.out.println("Invalid");
+            }
+        }while(true);
     }
 }
+
+//test
