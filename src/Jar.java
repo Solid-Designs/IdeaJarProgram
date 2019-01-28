@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.*;
 
 public class Jar {
     /* Create a program that takes ideas, then stores them. [Done]
@@ -95,14 +96,32 @@ public class Jar {
     }
 
     public void createJar(){
-        System.out.println("Creating Jar...");
         String userContinueChoice;
+        File jarFile = new File("idea-jar.txt");
+        System.out.println("Creating Jar...");
 
         do{
             System.out.println("Would you like to add an idea? (y or n): ");
             userContinueChoice = keyboard.nextLine();
             if(userContinueChoice.equalsIgnoreCase("y")){
                 System.out.println("adding new");
+                try{
+                    if(jarFile.createNewFile()){
+                        FileWriter jarWriter = new FileWriter("idea-jar.txt", true);
+                        System.out.println("Jar created");
+                        System.out.println("Add an idea: ");
+                        jarWriter.write(keyboard.nextLine() + "\n");
+                        jarWriter.close();
+                    }else{
+                        FileWriter jarWriter = new FileWriter("idea-jar.txt", true);
+                        System.out.println("Add an idea: ");
+                        jarWriter.write(keyboard.nextLine() + "\n");
+                        jarWriter.close();
+                    }
+                }catch(IOException e){
+                    System.out.println("There was an error");
+                    e.printStackTrace();
+                }
             }else if(userContinueChoice.equalsIgnoreCase("n")){
                 continueChoice();
             }else{
