@@ -1,14 +1,15 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.io.*;
 
 public class Jar {
     /* Create a program that takes ideas, then stores them. [Done]
     *  Create the app in an infinite loop until the user quits out. [Done]
     *  After each function, allow the user to continue or not. [Done]
-    *  Store the ideas in a list.
-    *  Place the list inside of a file.
+    *  Store the ideas in a list. [Done]
+    *  Place the list inside of a file. [Done]
     *  -
-    *  Allow users to read all items in the list.
+    *  Allow users to read all items in the list. [Done]
     *  -
     *  Allow users to edit specific items in the list.
     *  -
@@ -16,9 +17,10 @@ public class Jar {
     *  -
     *  Allow users to get a randomized result from the list.
     *  -
-    *  Allow users to exit.*/
+    *  Allow users to exit. [Done]*/
 
     Scanner keyboard = new Scanner(System.in);
+    File jarFile = new File("idea-jar.txt");
 
     public void displayMenu(){
         System.out.println("Welcome to the Idea Jar! \n" +
@@ -49,10 +51,12 @@ public class Jar {
                             createJar();
                             break;
                         case 2:
-                            System.out.println("Option 2");
+                            keyboard.nextLine();
+                            readJar();
                             break;
                         case 3:
-                            System.out.println("Option 3");
+                            keyboard.nextLine();
+                            editJar();
                             break;
                         case 4:
                             System.out.println("Option 4");
@@ -97,14 +101,12 @@ public class Jar {
 
     public void createJar(){
         String userContinueChoice;
-        File jarFile = new File("idea-jar.txt");
         System.out.println("Creating Jar...");
 
         do{
             System.out.println("Would you like to add an idea? (y or n): ");
             userContinueChoice = keyboard.nextLine();
             if(userContinueChoice.equalsIgnoreCase("y")){
-                System.out.println("adding new");
                 try{
                     if(jarFile.createNewFile()){
                         FileWriter jarWriter = new FileWriter("idea-jar.txt", true);
@@ -128,5 +130,53 @@ public class Jar {
                 System.out.println("Invalid");
             }
         }while(true);
+    }
+
+    public ArrayList readJar(){
+        // Create a list to print the document into.
+        ArrayList<String> jarList = new ArrayList<String>();
+
+        try{
+            FileReader jarObj = new FileReader(jarFile);
+            Scanner jarReader = new Scanner(jarObj);
+            int i = 0;
+            while(jarReader.hasNextLine()){
+                jarList.add(i + jarReader.nextLine());
+                i++;
+            }
+            System.out.println(jarList);
+            continueChoice();
+        }catch(IOException e){
+            System.out.println("File not found");
+            e.printStackTrace();
+        }
+        return jarList;
+    }
+
+    public void editJar(){
+        int elementChoice;
+        ArrayList<String> jarList = new ArrayList<String>();
+        jarList = readJar();
+        /* Take the list and ask the user to choose which item they would
+        like to edit.
+        Then make sure that the number is within range and is a number.
+        Then replace that element with a user inputted message.
+        Then instead of appending the file, just rewrite it with the new list.
+         */
+        while(true){
+            System.out.print("Which element would you like to edit: ");
+            if(keyboard.hasNextInt()){
+                elementChoice = keyboard.nextInt();
+                if(elementChoice >= 0 && elementChoice <= jarList.size()){
+                    System.out.println("Good");
+                    break;
+                }else{
+                    System.out.println("Bad");
+                }
+            }else{
+                System.out.println("Invalid input");
+                keyboard.next();
+            }
+        }
     }
 }
