@@ -11,7 +11,7 @@ public class Jar {
     *  -
     *  Allow users to read all items in the list. [Done]
     *  -
-    *  Allow users to edit specific items in the list.
+    *  Allow users to edit specific items in the list. [Done]
     *  -
     *  Allow users to delete specific items in the list.
     *  -
@@ -51,11 +51,11 @@ public class Jar {
                             createJar();
                             break;
                         case 2:
-                            keyboard.nextLine();
                             readJar();
+                            keyboard.nextLine();
+                            continueChoice();
                             break;
                         case 3:
-                            keyboard.nextLine();
                             editJar();
                             break;
                         case 4:
@@ -132,20 +132,19 @@ public class Jar {
         }while(true);
     }
 
-    public ArrayList readJar(){
+    public ArrayList<String> readJar(){
         // Create a list to print the document into.
         ArrayList<String> jarList = new ArrayList<String>();
 
         try{
             FileReader jarObj = new FileReader(jarFile);
             Scanner jarReader = new Scanner(jarObj);
-            int i = 0;
+//            int i = 0;
             while(jarReader.hasNextLine()){
-                jarList.add(i + jarReader.nextLine());
-                i++;
+                jarList.add(jarReader.nextLine());
+//                i++;
             }
             System.out.println(jarList);
-            continueChoice();
         }catch(IOException e){
             System.out.println("File not found");
             e.printStackTrace();
@@ -155,11 +154,12 @@ public class Jar {
 
     public void editJar(){
         int elementChoice;
-        ArrayList<String> jarList = new ArrayList<String>();
+        ArrayList<String> jarList;
         jarList = readJar();
+        String editedIdea;
         /* Take the list and ask the user to choose which item they would
-        like to edit.
-        Then make sure that the number is within range and is a number.
+        like to edit. [Done]
+        Then make sure that the number is within range and is a number. [Done]
         Then replace that element with a user inputted message.
         Then instead of appending the file, just rewrite it with the new list.
          */
@@ -167,8 +167,22 @@ public class Jar {
             System.out.print("Which element would you like to edit: ");
             if(keyboard.hasNextInt()){
                 elementChoice = keyboard.nextInt();
+                keyboard.nextLine();
                 if(elementChoice >= 0 && elementChoice <= jarList.size()){
-                    System.out.println("Good");
+                    System.out.println(jarList.get(elementChoice));
+                    System.out.println("What would you like to change it to: ");
+                    jarList.set(elementChoice, keyboard.nextLine());
+                    System.out.println(jarList);
+                    try{
+                        FileWriter jarWriter = new FileWriter("idea-jar.txt");
+                        for(String idea : jarList){
+                            jarWriter.write(idea + "\n");
+                        }
+                        jarWriter.close();
+                    }catch(IOException e){
+                        System.out.println("There was an error.");
+                        e.printStackTrace();
+                    }
                     break;
                 }else{
                     System.out.println("Bad");
@@ -178,5 +192,7 @@ public class Jar {
                 keyboard.next();
             }
         }
+        keyboard.nextLine();
+        continueChoice();
     }
 }
