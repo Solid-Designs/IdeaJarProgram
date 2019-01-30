@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Random;
 import java.io.*;
 
 public class Jar {
@@ -13,9 +14,9 @@ public class Jar {
     *  -
     *  Allow users to edit specific items in the list. [Done]
     *  -
-    *  Allow users to delete specific items in the list.
+    *  Allow users to delete specific items in the list. [Done]
     *  -
-    *  Allow users to get a randomized result from the list.
+    *  Allow users to get a randomized result from the list. [Done]
     *  -
     *  Allow users to exit. [Done]*/
 
@@ -59,13 +60,14 @@ public class Jar {
                             editJar();
                             break;
                         case 4:
-                            System.out.println("Option 4");
+                            deleteIdea();
                             break;
                         case 5:
-                            System.out.println("Option 5");
+                            randomIdea();
                             break;
                         case 6:
-                            System.out.println("Option 6");
+                            System.out.println("Have a nice day!");
+                            System.exit(1);
                             break;
                     }
                     keyboard.nextLine();
@@ -194,5 +196,49 @@ public class Jar {
         }
         keyboard.nextLine();
         continueChoice();
+    }
+
+    public void deleteIdea(){
+        int elementChoice;
+        ArrayList<String> jarList;
+        jarList = readJar();
+        String editedIdea;
+
+        while(true){
+            System.out.print("Which element would you like to delete: ");
+            if(keyboard.hasNextInt()){
+                elementChoice = keyboard.nextInt();
+                keyboard.nextLine();
+                if(elementChoice >= 0 && elementChoice <= jarList.size()){
+                    jarList.remove(elementChoice);
+                    System.out.println(jarList);
+                    try{
+                        FileWriter jarWriter = new FileWriter("idea-jar.txt");
+                        for(String idea : jarList){
+                            jarWriter.write(idea + "\n");
+                        }
+                        jarWriter.close();
+                    }catch(IOException e){
+                        System.out.println("There was an error.");
+                        e.printStackTrace();
+                    }
+                    break;
+                }else{
+                    System.out.println("Bad");
+                }
+            }else{
+                System.out.println("Invalid input");
+                keyboard.next();
+            }
+        }
+        keyboard.nextLine();
+        continueChoice();
+    }
+
+    public void randomIdea(){
+        Random r = new Random();
+        ArrayList<String> jarList = readJar();
+        int randomNum = r.nextInt(jarList.size());
+        System.out.println(jarList.get(randomNum));
     }
 }
